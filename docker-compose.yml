@@ -11,7 +11,7 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - data:/srv/data
+      - store:/srv/store/data
     networks:
       - caddy_default
 
@@ -28,7 +28,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - data:/srv/data
+      - studio:/srv/studio/data
     networks:
       - caddy_default
 
@@ -42,12 +42,16 @@ services:
     depends_on:
       - store
     volumes:
-      - data:/srv/data
+      - ident:/srv/ident/data
     networks:
       - caddy_default
 
 volumes:
-  data:
+  store:
+    driver: anybox/buttervolume:latest
+  studio:
+    driver: anybox/buttervolume:latest
+  ident:
     driver: anybox/buttervolume:latest
 
 networks:

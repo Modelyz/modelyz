@@ -2,11 +2,7 @@ version: '3'
 
 services:
   store:
-    image: modelyz:latest
-    build:
-      context: .
-      args:
-        - WSS=${WSS}
+    image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/store/store -h store
     ports:
       - "8081:8081"
@@ -17,11 +13,7 @@ services:
 
 
   studio:
-    image: modelyz:latest
-    build:
-      context: .
-      args:
-        - WSS=${WSS}
+    image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/studio/studio -d studio -f studio/data/messagestore.txt --store_host store
     depends_on:
       - store
@@ -33,11 +25,7 @@ services:
       - caddy_default
 
   ident:
-    image: modelyz:latest
-    build:
-      context: .
-      args:
-        - WSS=${WSS}
+    image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/ident/ident --store_host store
     depends_on:
       - store

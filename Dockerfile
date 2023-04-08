@@ -27,28 +27,22 @@ RUN apt-get update \
     && cabal update
 
 ADD https://api.github.com/repos/Modelyz/message/git/refs/heads/$STORE message.json
-RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/message \
-    && cd message \
-    && ./build.sh -o \
-    && cd ..
-
+RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/message
+ADD cabal.project /srv/message/
 ADD https://api.github.com/repos/Modelyz/store/git/refs/heads/$STORE store.json
-RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/store \
-    && cd store \
-    && ./build.sh -o \
-    && cd ..
-
+RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/store
+ADD cabal.project /srv/store/
 ADD https://api.github.com/repos/Modelyz/studio/git/refs/heads/$STUDIO studio.json
-RUN git clone --depth 1 --branch $STUDIO https://github.com/Modelyz/studio \
-    && cd studio \
-    && ./build.sh \
-    && cd ..
-
+RUN git clone --depth 1 --branch $STUDIO https://github.com/Modelyz/studio
+ADD cabal.project /srv/studio/
 ADD https://api.github.com/repos/Modelyz/ident/git/refs/heads/$IDENT ident.json
-RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/ident \
-    && cd ident \
-    && ./build.sh -o \
-    && cd ..
+RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/ident
+ADD cabal.project /srv/ident/
+
+RUN cd message && ./build.sh -o && cd ..
+RUN cd store   && ./build.sh -o && cd ..
+RUN cd studio  && ./build.sh    && cd ..
+RUN cd ident   && ./build.sh -o && cd ..
 
 
 FROM debian:bullseye

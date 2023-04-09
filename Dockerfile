@@ -5,8 +5,6 @@ ARG STORE=main
 ARG STUDIO=main
 ARG IDENT=main
 ARG ELM=0.19.1
-ARG WSS
-ENV WSS $WSS
 
 WORKDIR /srv
 RUN apt-get update \
@@ -55,5 +53,7 @@ RUN mkdir -p /srv/studio/data /srv/store/data /srv/ident/data
 COPY --from=build /srv/studio/build/ /srv/studio
 COPY --from=build /srv/store/build/ /srv/store
 COPY --from=build /srv/ident/build/ /srv/ident
+COPY entrypoint.sh /srv/
 WORKDIR /srv/
 VOLUME /srv/data
+ENTRYPOINT ["/srv/entrypoint.sh"]

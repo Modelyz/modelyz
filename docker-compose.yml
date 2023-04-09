@@ -15,6 +15,8 @@ services:
   studio:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/studio/studio -d studio -f studio/data/messagestore.txt --store_host store
+    environment:
+      - WSS=$WSS
     depends_on:
       - store
     ports:

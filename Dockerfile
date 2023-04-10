@@ -55,5 +55,7 @@ COPY --from=build /srv/store/build/ /srv/store
 COPY --from=build /srv/ident/build/ /srv/ident
 COPY entrypoint.sh /srv/
 WORKDIR /srv/
-VOLUME /srv/data
+VOLUME /srv/store/data
+VOLUME /srv/studio/data
+VOLUME /srv/ident/data
 ENTRYPOINT ["/srv/entrypoint.sh"]

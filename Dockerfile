@@ -39,7 +39,7 @@ ADD cabal.project /srv/ident/
 
 RUN cd message && ./build.sh -o && cd ..
 RUN cd store   && ./build.sh -o && cd ..
-RUN cd studio  && ./build.sh    && cd ..
+RUN cd studio  && ./build.sh -o && cd ..
 RUN cd ident   && ./build.sh -o && cd ..
 
 

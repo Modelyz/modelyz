@@ -49,6 +49,10 @@ FROM debian:bullseye
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        gettext-base
+
 RUN mkdir -p /srv/studio/data /srv/store/data /srv/ident/data
 COPY --from=build /srv/studio/build/ /srv/studio
 COPY --from=build /srv/store/build/ /srv/store

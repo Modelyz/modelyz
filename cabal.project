@@ -1,5 +1,7 @@
+jobs: $ncpus
+
 packages:
-    ../message
-    ../studio/back
-    ../store
-    ../ident
+    message
+    studio/back
+    store
+    ident

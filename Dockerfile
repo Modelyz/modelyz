@@ -24,23 +24,25 @@ RUN apt-get update \
     && mv elm /usr/local/bin/ \
     && cabal update
 
+ADD cabal.project /srv/
+
 ADD https://api.github.com/repos/Modelyz/message/git/refs/heads/$STORE message.json
 RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/message
-ADD cabal.project /srv/message/
+RUN cabal build message
+
 ADD https://api.github.com/repos/Modelyz/store/git/refs/heads/$STORE store.json
 RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/store
-ADD cabal.project /srv/store/
+RUN cabal build store
+
 ADD https://api.github.com/repos/Modelyz/studio/git/refs/heads/$STUDIO studio.json
 RUN git clone --depth 1 --branch $STUDIO https://github.com/Modelyz/studio
-ADD cabal.project /srv/studio/
+RUN cabal build studio/back
+
 ADD https://api.github.com/repos/Modelyz/ident/git/refs/heads/$IDENT ident.json
 RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/ident
-ADD cabal.project /srv/ident/
+RUN cabal build ident
 
-RUN cd message && ./build.sh -o && cd ..
-RUN cd store   && ./build.sh -o && cd ..
-RUN cd studio  && ./build.sh -o && cd ..
-RUN cd ident   && ./build.sh -o && cd ..
+RUN cd studio/front  && ./build.sh -o
 
 
 FROM debian:bullseye

@@ -39,9 +39,12 @@ ADD https://api.github.com/repos/Modelyz/ident/git/refs/heads/$IDENT ident.json
 RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/ident
 
 RUN cabal build message --enable-library-stripping --enable-executable-static --enable-executable-static
-RUN cabal build store --enable-library-stripping --enable-executable-static --enable-executable-static && --installdir=store/build
-RUN cabal build studio/back --enable-library-stripping --enable-executable-static --enable-executable-static && --installdir=studio/build
-RUN cabal build ident --enable-library-stripping --enable-executable-static --enable-executable-static && --installdir=ident/build 
+RUN cabal build store --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal install store --installdir=store/build
+RUN cabal build studio/back --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal install studio/back --installdir=studio/build
+RUN cabal build ident --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal install ident --installdir=ident/build 
 
 RUN cd studio/front  && ./build.sh -o
 

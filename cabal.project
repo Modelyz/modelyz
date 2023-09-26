@@ -5,3 +5,4 @@ packages:
     studio/back
     store
     ident
+    dumb

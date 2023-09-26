@@ -4,7 +4,7 @@ set -ex
 VERSION=16
 
 pushd ../studio
-sed -i "s/export APPVERSION=../export APPVERSION=$VERSION" front/build.sh
+sed -i "s/export APPVERSION=../export APPVERSION=$VERSION/" front/build.sh
 sed -i "s/version:            .*/version:            0.$VERSION.0.0/" back/modelyz-studio.cabal
 ./build.sh
 popd
@@ -27,9 +27,11 @@ popd
 for projects in deployment studio store ident dumb; do
     pushd ../$projects
     git ci -a -m "new version $VERSION"
+    git tag $VERSION
 done
 
 for projects in deployment studio store ident dumb; do
     pushd ../$projects
     git push
+    git push --tags
 done

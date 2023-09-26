@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 VERSION=16
 
@@ -23,12 +24,12 @@ sed -i "s/version:            .*/version:            0.$VERSION.0.0/" modelyz-du
 ./build.sh
 popd
 
-for service in studio store ident dumb; do
-    pushd ../$service
+for projects in deployment studio store ident dumb; do
+    pushd ../$projects
     git ci -a -m "new version $VERSION"
 done
 
-for service in studio store ident dumb; do
-    pushd ../$service
+for projects in deployment studio store ident dumb; do
+    pushd ../$projects
     git push
 done

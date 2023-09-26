@@ -40,12 +40,26 @@ services:
     networks:
       - caddy_default
 
+  dumb:
+    image: rg.fr-par.scw.cloud/prelab/modelyz
+    command: /srv/dumb/dumb --store_host store
+    environment:
+      - WSS=$WSS
+    depends_on:
+      - store
+    volumes:
+      - dumb:/srv/dumb/data
+    networks:
+      - caddy_default
+
 volumes:
   store:
     driver: anybox/buttervolume:latest
   studio:
     driver: anybox/buttervolume:latest
   ident:
+    driver: anybox/buttervolume:latest
+  dumb:
     driver: anybox/buttervolume:latest
 
 networks:

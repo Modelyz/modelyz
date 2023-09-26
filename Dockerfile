@@ -38,6 +38,9 @@ RUN git clone --depth 1 --branch $STUDIO https://github.com/Modelyz/studio
 ADD https://api.github.com/repos/Modelyz/ident/git/refs/heads/$IDENT ident.json
 RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/ident
 
+ADD https://api.github.com/repos/Modelyz/dumb/git/refs/heads/$IDENT dumb.json
+RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/dumb
+
 RUN cabal build message --enable-library-stripping --enable-executable-static --enable-executable-static
 RUN cabal build store --enable-library-stripping --enable-executable-static --enable-executable-static
 RUN cabal install store --installdir=store/build
@@ -45,6 +48,8 @@ RUN cabal build studio/back --enable-library-stripping --enable-executable-stati
 RUN cabal install studio/back --installdir=studio/build
 RUN cabal build ident --enable-library-stripping --enable-executable-static --enable-executable-static
 RUN cabal install ident --installdir=ident/build 
+RUN cabal build dumb --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal install dumb --installdir=dumb/build 
 
 RUN cd studio/front  && ./build.sh -o
 
@@ -59,13 +64,15 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         gettext-base
 
-RUN mkdir -p /srv/studio/data /srv/store/data /srv/ident/data
+RUN mkdir -p /srv/studio/data /srv/store/data /srv/ident/data /srv/dumb/data
 COPY --from=build /srv/studio/build/ /srv/studio
 COPY --from=build /srv/store/build/ /srv/store
 COPY --from=build /srv/ident/build/ /srv/ident
+COPY --from=build /srv/dumb/build/ /srv/dumb
 COPY entrypoint.sh /srv/
 WORKDIR /srv/
 VOLUME /srv/store/data
 VOLUME /srv/studio/data
 VOLUME /srv/ident/data
+VOLUME /srv/dumb/data
 ENTRYPOINT ["/srv/entrypoint.sh"]

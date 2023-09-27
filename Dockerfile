@@ -1,9 +1,11 @@
 FROM haskell:9.2 AS build
 #########################
 
-ARG STORE=main
-ARG STUDIO=main
-ARG IDENT=main
+ARG MESSAGE=1
+ARG STORE=1
+ARG STUDIO=17
+ARG IDENT=1
+ARG DUMB=1
 ARG ELM=0.19.1
 
 WORKDIR /srv
@@ -26,29 +28,29 @@ RUN apt-get update \
 
 ADD cabal.project /srv/
 
-ADD https://api.github.com/repos/Modelyz/message/git/refs/heads/$STORE message.json
-RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/message
+ADD https://api.github.com/repos/Modelyz/message/git/refs/tags/$MESSAGE message.json
+RUN git clone --depth 1 --branch $MESSAGE https://github.com/Modelyz/message
 
-ADD https://api.github.com/repos/Modelyz/store/git/refs/heads/$STORE store.json
+ADD https://api.github.com/repos/Modelyz/store/git/refs/tags/$STORE store.json
 RUN git clone --depth 1 --branch $STORE https://github.com/Modelyz/store
 
-ADD https://api.github.com/repos/Modelyz/studio/git/refs/heads/$STUDIO studio.json
+ADD https://api.github.com/repos/Modelyz/studio/git/refs/tags/$STUDIO studio.json
 RUN git clone --depth 1 --branch $STUDIO https://github.com/Modelyz/studio
 
-ADD https://api.github.com/repos/Modelyz/ident/git/refs/heads/$IDENT ident.json
+ADD https://api.github.com/repos/Modelyz/ident/git/refs/tags/$IDENT ident.json
 RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/ident
 
-ADD https://api.github.com/repos/Modelyz/dumb/git/refs/heads/$IDENT dumb.json
-RUN git clone --depth 1 --branch $IDENT https://github.com/Modelyz/dumb
+ADD https://api.github.com/repos/Modelyz/dumb/git/refs/tags/$DUMB dumb.json
+RUN git clone --depth 1 --branch $DUMB https://github.com/Modelyz/dumb
 
-RUN cabal build message --enable-library-stripping --enable-executable-static --enable-executable-static
-RUN cabal build store --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal build message -O2 --ghc-options="-Wall" --enable-library-stripping
+RUN cabal build store -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
 RUN cabal install store --installdir=store/build
-RUN cabal build studio/back --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal build studio/back -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
 RUN cabal install studio/back --installdir=studio/build
-RUN cabal build ident --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal build ident -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
 RUN cabal install ident --installdir=ident/build 
-RUN cabal build dumb --enable-library-stripping --enable-executable-static --enable-executable-static
+RUN cabal build dumb -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
 RUN cabal install dumb --installdir=dumb/build 
 
 RUN cd studio/front  && ./build.sh -o

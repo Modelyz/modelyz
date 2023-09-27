@@ -12,4 +12,4 @@ fi
 
 # define studio host in .ssh/config
 docker push rg.fr-par.scw.cloud/prelab/modelyz
-ssh modelyz "cd services/modelyz && $RESET && git pull && /opt/bin/docker-compose pull && /opt/bin/docker-compose up -d"
+ssh modelyz "cd services/prelab/modelyz && $RESET && git pull && /opt/bin/docker-compose pull && /opt/bin/docker-compose up -d"

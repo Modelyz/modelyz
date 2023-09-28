@@ -44,14 +44,8 @@ ADD https://api.github.com/repos/Modelyz/dumb/git/refs/tags/$DUMB dumb.json
 RUN git clone --depth 1 --branch $DUMB https://github.com/Modelyz/dumb
 
 RUN cabal build message -O2 --ghc-options="-Wall" --enable-library-stripping
-RUN cabal build store -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
-RUN cabal install store --installdir=store/build
-RUN cabal build studio/back -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
-RUN cabal install studio/back --installdir=studio/build
-RUN cabal build ident -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
-RUN cabal install ident --installdir=ident/build 
-RUN cabal build dumb -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
-RUN cabal install dumb --installdir=dumb/build 
+RUN cabal build studio store ident dumb -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
+RUN cabal install studio store ident dumb --installdir=build
 
 RUN cd studio/front  && ./build.sh -o
 
@@ -67,10 +61,10 @@ RUN apt-get update \
         gettext-base
 
 RUN mkdir -p /srv/studio/data /srv/store/data /srv/ident/data /srv/dumb/data
-COPY --from=build /srv/studio/build/ /srv/studio
-COPY --from=build /srv/store/build/ /srv/store
-COPY --from=build /srv/ident/build/ /srv/ident
-COPY --from=build /srv/dumb/build/ /srv/dumb
+COPY --from=build /srv/build/studio /srv/studio/
+COPY --from=build /srv/build/store /srv/store/
+COPY --from=build /srv/build/ident /srv/ident/
+COPY --from=build /srv/build/dumb /srv/dumb/
 COPY entrypoint.sh /srv/
 WORKDIR /srv/
 VOLUME /srv/store/data

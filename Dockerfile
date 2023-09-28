@@ -45,7 +45,7 @@ RUN git clone --depth 1 --branch $DUMB https://github.com/Modelyz/dumb
 
 RUN cabal build message -O2 --ghc-options="-Wall" --enable-library-stripping
 RUN cabal build studio store ident dumb -O2 --ghc-options="-Wall" --enable-library-stripping --enable-executable-static
-RUN cabal install studio store ident dumb --installdir=build
+RUN cabal install studio store ident dumb -O2 --ghc-options="-Wall" --installdir=build
 
 RUN cd studio/front  && ./build.sh -o
 

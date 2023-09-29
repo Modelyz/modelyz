@@ -61,6 +61,7 @@ RUN apt-get update \
         gettext-base
 
 RUN mkdir -p /srv/studio/data /srv/store/data /srv/ident/data /srv/dumb/data
+COPY --from=build /srv/studio/build /srv/studio
 COPY --from=build /srv/build/studio /srv/studio/
 COPY --from=build /srv/build/store /srv/store/
 COPY --from=build /srv/build/ident /srv/ident/

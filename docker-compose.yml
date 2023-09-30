@@ -4,6 +4,7 @@ services:
   store:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/store/store -h store
+    restart: unless-stopped
     environment:
       - WSS=$WSS
     ports:
@@ -17,6 +18,7 @@ services:
   studio:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/studio/studio -d . -f studio/data/messagestore.txt --store_host store
+    restart: unless-stopped
     environment:
       - WSS=$WSS
     depends_on:
@@ -31,6 +33,7 @@ services:
   ident:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/ident/ident --store_host store
+    restart: unless-stopped
     environment:
       - WSS=$WSS
     depends_on:
@@ -43,6 +46,7 @@ services:
   dumb:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/dumb/dumb --store_host store
+    restart: unless-stopped
     environment:
       - WSS=$WSS
     depends_on:

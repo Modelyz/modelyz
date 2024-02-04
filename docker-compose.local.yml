@@ -4,6 +4,8 @@ services:
   store:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/store/store -h store
+    environment:
+      - WSS=ws://localhost:8080
     ports:
       - "8081:8081"
     volumes:
@@ -24,6 +26,8 @@ services:
   ident:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/ident/ident --store_host store
+    environment:
+      - WSS=ws://localhost:8080
     depends_on:
       - store
     volumes:
@@ -32,6 +36,8 @@ services:
   dumb:
     image: rg.fr-par.scw.cloud/prelab/modelyz
     command: /srv/dumb/dumb --store_host store
+    environment:
+      - WSS=ws://localhost:8080
     depends_on:
       - store
     volumes:
